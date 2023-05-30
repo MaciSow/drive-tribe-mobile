@@ -1,0 +1,19 @@
+# Ignore artifacts:
+build
+coverage
+
+#dependencies
+node_modules/
+
+#others
+*.md
+.lock
+
+#logs
+logs
+*.log
+yarn-debug.log*
+yarn-error.log*
+
+#ide
+.idea/
