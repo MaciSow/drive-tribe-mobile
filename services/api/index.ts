@@ -27,7 +27,6 @@ const onError = <T>(err: ApiError, callbacks?: Callbacks<T>) => {
     }
   }
 
-  // handleError(err, Boolean(callbacks?.offHandlerNotifications)); //todo add error handler
   throw err;
 };
 

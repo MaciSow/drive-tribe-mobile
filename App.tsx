@@ -1,20 +1,56 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { useFonts } from 'expo-font';
+import { NavigationContainer } from '@react-navigation/native';
+import { Provider } from 'react-redux';
+import { Stack } from './navigation';
+import { DeviceList } from './screens/DeviceList';
+import { Colors } from './constants/colors';
+import { DeviceNavigator } from './screens/DeviceNavigator';
+import { SearchDevice } from './screens/SearchDevice';
+import { store } from './config/store';
+import { DisconnectIcon } from './screens/DeviceNavigator/DisconnectIcon';
+import { Loading } from './components/Loading';
 
-export default function App() {
+const App = () => {
+  const [fontsLoaded] = useFonts({
+    'Roboto-Regular': require('./assets/fonts/Roboto-Regular.ttf'),
+    'Roboto-Bold': require('./assets/fonts/Roboto-Bold.ttf'),
+  });
+
+  if (!fontsLoaded) {
+    return <Loading />;
+  }
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <Provider store={store}>
+      <StatusBar style="light" />
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{
+            headerTintColor: Colors.textLight,
+            headerStyle: { backgroundColor: Colors.primary700 },
+            contentStyle: { backgroundColor: Colors.background },
+          }}
+        >
+          <Stack.Screen
+            name="DeviceList"
+            component={DeviceList}
+            options={{ title: 'Device List' }}
+          />
+          <Stack.Screen
+            name="SearchDevice"
+            component={SearchDevice}
+            options={{ title: 'Search Device' }}
+          />
+          <Stack.Screen
+            name="DeviceDetails"
+            component={DeviceNavigator}
+            options={{ headerRight: () => <DisconnectIcon /> }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
